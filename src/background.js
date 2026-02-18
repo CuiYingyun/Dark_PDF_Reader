@@ -11,10 +11,23 @@ const REDIRECT_TTL_MS = 8000;
 const AUTO_REDIRECT_MAX_ATTEMPTS = 3;
 const AUTO_RULE_IDS = [1001, 1002];
 const IS_EDGE = /\bEdg\//i.test(globalThis.navigator?.userAgent || "");
+const DEFAULT_THEME_MODE = "preset";
+const DEFAULT_THEME_PRESET_ID = "graphite-gray";
+const DEFAULT_CUSTOM_THEME_COLOR = "#121212";
+const PRESET_THEME_IDS = new Set([
+  "graphite-gray",
+  "midnight-black",
+  "deep-sea-blue",
+  "pine-ink-green",
+  "warm-umber-night"
+]);
 
 const DEFAULT_SETTINGS = Object.freeze({
   autoTakeoverEnabled: true,
   autoOutlineAutoFitEnabled: true,
+  themeMode: DEFAULT_THEME_MODE,
+  themePresetId: DEFAULT_THEME_PRESET_ID,
+  customThemeColor: DEFAULT_CUSTOM_THEME_COLOR,
   whitelist: [],
   blacklist: []
 });
@@ -163,9 +176,27 @@ function normalizeSettings(raw) {
   return {
     autoTakeoverEnabled: raw?.autoTakeoverEnabled !== false,
     autoOutlineAutoFitEnabled: raw?.autoOutlineAutoFitEnabled !== false,
+    themeMode: normalizeThemeMode(raw?.themeMode),
+    themePresetId: normalizeThemePresetId(raw?.themePresetId),
+    customThemeColor: normalizeHexColor(raw?.customThemeColor) || DEFAULT_CUSTOM_THEME_COLOR,
     whitelist: normalizeRuleList(raw?.whitelist),
     blacklist: normalizeRuleList(raw?.blacklist)
   };
+}
+
+function normalizeThemeMode(value) {
+  return value === "custom" ? "custom" : DEFAULT_THEME_MODE;
+}
+
+function normalizeThemePresetId(value) {
+  const normalized = String(value || "").trim().toLowerCase();
+  return PRESET_THEME_IDS.has(normalized) ? normalized : DEFAULT_THEME_PRESET_ID;
+}
+
+function normalizeHexColor(value) {
+  const text = String(value || "").trim().toLowerCase();
+  const match = text.match(/^#?([0-9a-f]{6})$/i);
+  return match ? `#${match[1]}` : null;
 }
 
 function normalizeRuleList(value) {

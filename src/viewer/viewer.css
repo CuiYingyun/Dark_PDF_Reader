@@ -9,6 +9,7 @@
   --danger-bg: rgba(248, 69, 69, 0.16);
   --danger-line: rgba(255, 120, 120, 0.48);
   --shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+  --page-tint: #121212;
 }
 
 html,
@@ -265,6 +266,8 @@ input[type="number"] {
   inset: 0;
   overflow: auto;
   padding: 16px 0;
+  background: var(--page-tint);
+  isolation: isolate;
 }
 
 #viewer {
@@ -272,12 +275,14 @@ input[type="number"] {
 }
 
 .pdfViewer .page {
+  position: relative;
   border-radius: 6px;
   overflow: hidden;
 }
 
 .pdfViewer.dark-invert .page {
   filter: invert(1) hue-rotate(180deg);
+  mix-blend-mode: screen;
 }
 
 #emptyState {

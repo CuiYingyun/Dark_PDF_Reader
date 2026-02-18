@@ -215,7 +215,14 @@ async function waitForSnapshot(page, timeoutMs) {
     });
 
     if (snapshot.pageCount > 0 && (snapshot.hasOutline || snapshot.noOutlineText || snapshot.errorVisible)) {
-      return snapshot;
+      const waitingForOutlineFit =
+        snapshot.hasOutline &&
+        !snapshot.outlineCollapsed &&
+        snapshot.zoomValue === "page-width" &&
+        snapshot.widthRatio > 1.03;
+      if (!waitingForOutlineFit) {
+        return snapshot;
+      }
     }
 
     if (snapshot.passwordVisible || snapshot.errorVisible) {

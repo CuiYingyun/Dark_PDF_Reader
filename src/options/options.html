@@ -33,6 +33,33 @@
         <p class="hint">开启后：有目录则自动展开目录并将正文设为“适应宽度”；无目录则保持目录折叠。</p>
       </section>
 
+      <section class="card">
+        <h2>Dark Mode 主题色</h2>
+        <p class="hint">默认是石墨灰。可选择专业预设，或点击“自定义颜色”卡片后下拉编辑 RGB/HEX/拾色板。</p>
+
+        <div id="themePresetList" class="theme-presets" role="radiogroup" aria-label="预设主题色"></div>
+
+        <div id="customThemeDropdown" class="custom-theme-dropdown" hidden>
+          <div class="custom-theme">
+            <div class="custom-theme-head">
+              <span>自定义颜色</span>
+              <input id="customColorPicker" type="color" value="#121212" />
+            </div>
+
+            <div class="rgb-inputs">
+              <label>R<input id="customRInput" type="number" min="0" max="255" inputmode="numeric" /></label>
+              <label>G<input id="customGInput" type="number" min="0" max="255" inputmode="numeric" /></label>
+              <label>B<input id="customBInput" type="number" min="0" max="255" inputmode="numeric" /></label>
+            </div>
+
+            <label class="hex-input">
+              HEX
+              <input id="customHexInput" type="text" spellcheck="false" maxlength="7" placeholder="#121212" />
+            </label>
+          </div>
+        </div>
+      </section>
+
       <section class="grid">
         <div class="card">
           <h2>白名单（可选）</h2>

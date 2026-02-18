@@ -10,7 +10,17 @@ const MAX_SCALE = 5;
 const SCALE_STEP = 1.1;
 const REMOTE_SOURCE_LABEL = "网页 PDF";
 const DEFAULT_VIEWER_SETTINGS = Object.freeze({
-  autoOutlineAutoFitEnabled: true
+  autoOutlineAutoFitEnabled: true,
+  themeMode: "preset",
+  themePresetId: "graphite-gray",
+  customThemeColor: "#121212"
+});
+const THEME_PRESETS = Object.freeze({
+  "graphite-gray": "#121212",
+  "midnight-black": "#000000",
+  "deep-sea-blue": "#0f172a",
+  "pine-ink-green": "#102017",
+  "warm-umber-night": "#1e1812"
 });
 
 const els = {
@@ -77,6 +87,9 @@ let returnSourceUrl = null;
 let autoOutlineAutoFitEnabled = DEFAULT_VIEWER_SETTINGS.autoOutlineAutoFitEnabled;
 let outlineAutoFitTimer = null;
 let outlineAutoFitVersion = 0;
+let currentThemeMode = DEFAULT_VIEWER_SETTINGS.themeMode;
+let currentThemePresetId = DEFAULT_VIEWER_SETTINGS.themePresetId;
+let currentCustomThemeColor = DEFAULT_VIEWER_SETTINGS.customThemeColor;
 
 init();
 
@@ -87,6 +100,7 @@ function init() {
   clearOutline();
   updatePageControls(1, 0);
   updateZoomUi({ scale: 1, presetValue: DEFAULT_SCALE_VALUE });
+  applyThemeTint(DEFAULT_VIEWER_SETTINGS.customThemeColor);
   bindSettingsEvents();
   void initializeViewerState();
 }
@@ -271,7 +285,7 @@ function bindSettingsEvents() {
       return;
     }
     const normalized = normalizeViewerSettings(changes[SETTINGS_STORAGE_KEY].newValue || DEFAULT_VIEWER_SETTINGS);
-    autoOutlineAutoFitEnabled = normalized.autoOutlineAutoFitEnabled;
+    applyViewerSettings(normalized);
   });
 }
 
@@ -950,13 +964,50 @@ function clamp(value, min, max) {
 async function loadViewerSettings() {
   const stored = await storageGet(SETTINGS_STORAGE_KEY);
   const normalized = normalizeViewerSettings(stored || DEFAULT_VIEWER_SETTINGS);
-  autoOutlineAutoFitEnabled = normalized.autoOutlineAutoFitEnabled;
+  applyViewerSettings(normalized);
 }
 
 function normalizeViewerSettings(raw) {
   return {
-    autoOutlineAutoFitEnabled: raw?.autoOutlineAutoFitEnabled !== false
+    autoOutlineAutoFitEnabled: raw?.autoOutlineAutoFitEnabled !== false,
+    themeMode: normalizeThemeMode(raw?.themeMode),
+    themePresetId: normalizeThemePresetId(raw?.themePresetId),
+    customThemeColor: normalizeHexColor(raw?.customThemeColor) || DEFAULT_VIEWER_SETTINGS.customThemeColor
   };
+}
+
+function applyViewerSettings(settings) {
+  autoOutlineAutoFitEnabled = settings.autoOutlineAutoFitEnabled;
+  currentThemeMode = settings.themeMode;
+  currentThemePresetId = settings.themePresetId;
+  currentCustomThemeColor = settings.customThemeColor;
+  applyThemeTint(resolveThemeTint(settings));
+}
+
+function resolveThemeTint(settings) {
+  if (settings.themeMode === "custom") {
+    return settings.customThemeColor;
+  }
+  return THEME_PRESETS[settings.themePresetId] || DEFAULT_VIEWER_SETTINGS.customThemeColor;
+}
+
+function applyThemeTint(color) {
+  document.documentElement.style.setProperty("--page-tint", color || DEFAULT_VIEWER_SETTINGS.customThemeColor);
+}
+
+function normalizeThemeMode(value) {
+  return value === "custom" ? "custom" : "preset";
+}
+
+function normalizeThemePresetId(value) {
+  const id = String(value || "").trim().toLowerCase();
+  return THEME_PRESETS[id] ? id : DEFAULT_VIEWER_SETTINGS.themePresetId;
+}
+
+function normalizeHexColor(value) {
+  const text = String(value || "").trim().toLowerCase();
+  const match = text.match(/^#?([0-9a-f]{6})$/i);
+  return match ? `#${match[1]}` : null;
 }
 
 function storageGet(key) {
