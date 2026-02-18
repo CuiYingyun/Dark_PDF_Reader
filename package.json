@@ -12,7 +12,8 @@
     "test:edge:arxiv": "PDF_TEST_BROWSER=edge node ./scripts/test-arxiv-playwright.mjs",
     "test:edge:list": "PDF_TEST_BROWSER=edge node ./scripts/test-edge-arxiv-list-click-playwright.mjs",
     "test:edge:outline": "node ./scripts/test-edge-outline-behavior-playwright.mjs",
-    "test:edge:theme": "node ./scripts/test-edge-theme-playwright.mjs"
+    "test:edge:theme": "node ./scripts/test-edge-theme-playwright.mjs",
+    "test:edge:color-toggle": "node ./scripts/test-edge-color-toggle-playwright.mjs"
   },
   "keywords": [
     "chrome-extension",

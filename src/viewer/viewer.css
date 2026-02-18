@@ -107,6 +107,15 @@ input[type="number"] {
   background: linear-gradient(180deg, #252525 0%, #1c1c1c 100%);
 }
 
+#colorToggleBtn {
+  background: linear-gradient(180deg, #2c2c2c 0%, #202020 100%);
+}
+
+#colorToggleBtn.is-off {
+  border-color: rgba(192, 192, 192, 0.8);
+  background: linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 100%);
+}
+
 #pageNumberInput {
   width: 64px;
 }
@@ -268,6 +277,10 @@ input[type="number"] {
   padding: 16px 0;
   background: var(--page-tint);
   isolation: isolate;
+}
+
+:root.color-enhancement-off #viewerContainer {
+  background: #f1f1f1;
 }
 
 #viewer {

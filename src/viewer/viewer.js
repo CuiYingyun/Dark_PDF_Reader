@@ -40,6 +40,7 @@ const els = {
   searchPrevBtn: document.getElementById("searchPrevBtn"),
   searchNextBtn: document.getElementById("searchNextBtn"),
   searchResult: document.getElementById("searchResult"),
+  colorToggleBtn: document.getElementById("colorToggleBtn"),
   optionsBtn: document.getElementById("optionsBtn"),
   outlineToggleBtn: document.getElementById("outlineToggleBtn"),
   outlinePanel: document.getElementById("outlinePanel"),
@@ -90,6 +91,7 @@ let outlineAutoFitVersion = 0;
 let currentThemeMode = DEFAULT_VIEWER_SETTINGS.themeMode;
 let currentThemePresetId = DEFAULT_VIEWER_SETTINGS.themePresetId;
 let currentCustomThemeColor = DEFAULT_VIEWER_SETTINGS.customThemeColor;
+let colorEnhancementEnabled = true;
 
 init();
 
@@ -101,6 +103,7 @@ function init() {
   updatePageControls(1, 0);
   updateZoomUi({ scale: 1, presetValue: DEFAULT_SCALE_VALUE });
   applyThemeTint(DEFAULT_VIEWER_SETTINGS.customThemeColor);
+  applyColorEnhancementState();
   bindSettingsEvents();
   void initializeViewerState();
 }
@@ -214,6 +217,11 @@ function bindUiEvents() {
     if (chrome.runtime?.openOptionsPage) {
       chrome.runtime.openOptionsPage();
     }
+  });
+
+  els.colorToggleBtn.addEventListener("click", () => {
+    colorEnhancementEnabled = !colorEnhancementEnabled;
+    applyColorEnhancementState();
   });
 
   els.outlineToggleBtn.addEventListener("click", () => {
@@ -993,6 +1001,16 @@ function resolveThemeTint(settings) {
 
 function applyThemeTint(color) {
   document.documentElement.style.setProperty("--page-tint", color || DEFAULT_VIEWER_SETTINGS.customThemeColor);
+}
+
+function applyColorEnhancementState() {
+  const isEnabled = colorEnhancementEnabled !== false;
+  els.viewer.classList.toggle("dark-invert", isEnabled);
+  document.documentElement.classList.toggle("color-enhancement-off", !isEnabled);
+  els.colorToggleBtn.classList.toggle("is-off", !isEnabled);
+  els.colorToggleBtn.textContent = isEnabled ? "临时关闭改色" : "恢复改色";
+  els.colorToggleBtn.title = isEnabled ? "临时查看原始配色" : "恢复 Dark Mode 改色";
+  els.colorToggleBtn.setAttribute("aria-pressed", !isEnabled ? "true" : "false");
 }
 
 function normalizeThemeMode(value) {
