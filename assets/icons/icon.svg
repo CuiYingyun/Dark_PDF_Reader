@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Dark PDF Reader icon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#040404" />
+      <stop offset="100%" stop-color="#171717" />
+    </linearGradient>
+    <linearGradient id="doc" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6f6f6" />
+      <stop offset="100%" stop-color="#dddddd" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="url(#bg)" />
+
+  <rect x="122" y="88" width="268" height="336" rx="30" fill="url(#doc)" />
+  <path d="M324 88 L390 154 L390 88 Z" fill="#c6c6c6" />
+
+  <rect x="166" y="202" width="178" height="20" rx="10" fill="#242424" />
+  <rect x="166" y="244" width="156" height="20" rx="10" fill="#333333" />
+  <rect x="166" y="286" width="132" height="20" rx="10" fill="#464646" />
+
+  <circle cx="282" cy="352" r="54" fill="#0f0f0f" />
+  <circle cx="304" cy="342" r="48" fill="#ececec" />
+</svg>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dark PDF Reader</title>
+    <link rel="icon" href="../../assets/icons/icon-32.png" />
+    <link rel="stylesheet" href="../../vendor/pdfjs/web/pdf_viewer.css" />
+    <link rel="stylesheet" href="./viewer.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header id="toolbar">
+        <div class="toolbar-group">
+          <img class="brand-icon" src="../../assets/icons/icon-32.png" alt="Dark PDF Reader 图标" />
+          <button id="openFileBtn" type="button">打开 PDF</button>
+          <button id="returnSourceBtn" type="button" hidden>返回原网页</button>
+          <input id="fileInput" type="file" accept="application/pdf,.pdf" hidden />
+          <span id="fileName" title="未打开文件">未打开文件</span>
+        </div>
+
+        <div class="toolbar-group">
+          <button id="prevPageBtn" type="button" title="上一页">◀</button>
+          <input id="pageNumberInput" type="number" min="1" value="1" />
+          <span id="pageCountLabel">/ 0</span>
+          <button id="nextPageBtn" type="button" title="下一页">▶</button>
+        </div>
+
+        <div class="toolbar-group">
+          <button id="zoomOutBtn" type="button" title="缩小">-</button>
+          <select id="zoomSelect" title="缩放比例">
+            <option value="page-width">适应宽度</option>
+            <option value="page-fit">适应页面</option>
+            <option value="0.5">50%</option>
+            <option value="0.75">75%</option>
+            <option value="1">100%</option>
+            <option value="1.25">125%</option>
+            <option value="1.5">150%</option>
+            <option value="2">200%</option>
+            <option value="3">300%</option>
+            <option value="4">400%</option>
+            <option id="customZoomOption" value="1" hidden>100%</option>
+          </select>
+          <button id="zoomInBtn" type="button" title="放大">+</button>
+        </div>
+
+        <div class="toolbar-group grow">
+          <input id="searchInput" type="search" placeholder="搜索文本（Enter 下一处）" />
+          <button id="searchPrevBtn" type="button" title="上一个">↑</button>
+          <button id="searchNextBtn" type="button" title="下一个">↓</button>
+          <span id="searchResult">0 / 0</span>
+        </div>
+
+        <div class="toolbar-group">
+          <button id="optionsBtn" type="button">设置</button>
+          <button id="outlineToggleBtn" type="button">目录</button>
+        </div>
+      </header>
+
+      <div id="errorBanner" hidden>
+        <div id="errorMessage"></div>
+        <div id="errorActions">
+          <a id="errorActionLink" href="#" target="_blank" rel="noopener noreferrer" hidden>在新标签打开原链接</a>
+          <button id="errorCloseBtn" type="button">关闭</button>
+        </div>
+      </div>
+
+      <main id="workspace">
+        <aside id="outlinePanel" class="collapsed">
+          <div id="outlineHeader">文档目录</div>
+          <div id="outlineContainer"></div>
+        </aside>
+
+        <section id="viewerSection">
+          <div id="viewerContainer">
+            <div id="viewer" class="pdfViewer dark-invert"></div>
+          </div>
+          <div id="emptyState">点击“打开 PDF”并选择本地文件开始阅读</div>
+        </section>
+      </main>
+    </div>
+
+    <div id="passwordDialogBackdrop" hidden>
+      <div id="passwordDialog" role="dialog" aria-modal="true" aria-labelledby="passwordDialogTitle">
+        <h2 id="passwordDialogTitle">输入 PDF 密码</h2>
+        <p id="passwordPrompt">该 PDF 已加密，请输入密码。</p>
+        <input id="passwordInput" type="password" autocomplete="off" />
+        <div class="dialog-actions">
+          <button id="passwordCancelBtn" type="button">取消</button>
+          <button id="passwordConfirmBtn" type="button">确认</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../vendor/pdfjs/build/pdf.js"></script>
+    <script src="../../vendor/pdfjs/web/pdf_viewer.js"></script>
+    <script src="./viewer.js"></script>
+  </body>
+</html>

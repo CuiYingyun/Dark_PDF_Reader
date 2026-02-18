@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dark PDF Reader 设置</title>
+    <link rel="icon" href="../../assets/icons/icon-32.png" />
+    <link rel="stylesheet" href="./options.css" />
+  </head>
+  <body>
+    <main id="app">
+      <header class="page-header">
+        <img class="brand-icon" src="../../assets/icons/icon-64.png" alt="Dark PDF Reader 图标" />
+        <div class="page-title">
+          <h1>Dark PDF Reader 设置</h1>
+          <p>自动接管网页 PDF、白名单、黑名单（黑名单优先）。</p>
+        </div>
+      </header>
+
+      <section class="card">
+        <label class="toggle-row" for="autoTakeoverEnabled">
+          <input id="autoTakeoverEnabled" type="checkbox" />
+          <span>启用“直达 PDF 自动进入插件”</span>
+        </label>
+        <p class="hint">
+          开启后，访问网页直达 PDF 时将自动跳转到 Dark PDF Reader；关闭后只保留手动打开方式。
+        </p>
+
+        <label class="toggle-row" for="autoOutlineAutoFitEnabled">
+          <input id="autoOutlineAutoFitEnabled" type="checkbox" />
+          <span>有目录时自动展开并适应宽度</span>
+        </label>
+        <p class="hint">开启后：有目录则自动展开目录并将正文设为“适应宽度”；无目录则保持目录折叠。</p>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <h2>白名单（可选）</h2>
+          <p class="hint">留空表示全站生效。可填域名或通配，如 <code>arxiv.org</code>、<code>*.example.com</code>。</p>
+          <textarea id="whitelistInput" spellcheck="false" placeholder="每行一个规则"></textarea>
+        </div>
+
+        <div class="card">
+          <h2>黑名单（优先级最高）</h2>
+          <p class="hint">命中黑名单的网站不会自动接管，但仍可手动右键“使用插件打开”。</p>
+          <textarea id="blacklistInput" spellcheck="false" placeholder="每行一个规则"></textarea>
+        </div>
+      </section>
+
+      <footer class="actions">
+        <button id="resetBtn" type="button">恢复默认</button>
+        <button id="saveBtn" type="button">保存设置</button>
+        <span id="statusText" aria-live="polite"></span>
+      </footer>
+    </main>
+
+    <script src="./options.js"></script>
+  </body>
+</html>
